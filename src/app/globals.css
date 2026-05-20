@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
+@theme {
+  /* Fonts — mapped from next/font CSS variables injected in layout.tsx */
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Nautilus background scale */
+  --color-base:          #080B14;
+  --color-surface:       #0F1320;
+  --color-elevated:      #161B2E;
+  --color-subtle:        #1C2236;
+
+  /* Borders */
+  --color-border:        #252D44;
+  --color-border-strong: #3A4560;
+
+  /* Text */
+  --color-primary:       #EEF0F8;
+  --color-secondary:     #7A84A0;
+  --color-muted:         #404860;
+
+  /* Accent */
+  --color-accent:        #4F8EF8;
+
+  /* Semantic finance colors */
+  --color-income:        #3DD68C;
+  --color-expense:       #F06060;
+  --color-transfer:      #9B8EF2;
+  --color-warning:       #F0A030;
+}
+
+/* rgba variants — not expressible as Tailwind theme tokens, used via arbitrary values */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --accent-glow:      rgba(79, 142, 248, 0.15);
+  --income-subtle:    rgba(61, 214, 140, 0.10);
+  --expense-subtle:   rgba(240, 96, 96, 0.10);
+  --transfer-subtle:  rgba(155, 142, 242, 0.10);
+  --warning-subtle:   rgba(240, 160, 48, 0.10);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: #080B14;
+  color: #EEF0F8;
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Safe area padding for iOS notch / home indicator */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Tabular nums on all mono text so amounts never shift layout */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Remove all scrollbar decoration on webkit */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

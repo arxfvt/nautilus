@@ -34,7 +34,7 @@ export default async function DashboardPage() {
         },
       },
     }),
-    prisma.user.findUnique({ where: { id: userId }, select: { defaultCurrency: true } }),
+    prisma.user.findUnique({ where: { id: userId }, select: { defaultCurrency: true, name: true } }),
     prisma.transaction.findMany({
       where: { userId },
       orderBy: { date: "desc" },
@@ -54,6 +54,13 @@ export default async function DashboardPage() {
   ]);
 
   const defaultCurrency = user?.defaultCurrency ?? "UGX";
+
+  // Time-based greeting in Africa/Kampala timezone
+  const hour = parseInt(
+    new Date().toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: "Africa/Kampala" })
+  );
+  const greeting = hour >= 5 && hour < 12 ? "Good morning" : hour >= 12 && hour < 17 ? "Good afternoon" : "Good evening";
+  const firstName = (user?.name ?? session.user.name ?? "there").split(" ")[0];
 
   const accountsWithBalance: AccountWithBalance[] = accounts.map((account) => {
     const income = account.transactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
@@ -149,8 +156,18 @@ export default async function DashboardPage() {
     <>
       <TopBar showActions />
       <div className="pb-32">
+        {/* Greeting */}
+        <div className="px-4 pt-5 pb-2">
+          <p className="text-xl font-semibold" style={{ color: "var(--color-primary)" }}>
+            {greeting}, {firstName} 👋
+          </p>
+          <p className="text-sm mt-0.5" style={{ color: "var(--color-secondary)" }}>
+            Here&apos;s your financial snapshot
+          </p>
+        </div>
+
         {/* Net worth */}
-        <div className="px-4 pt-5 pb-4">
+        <div className="px-4 pt-3 pb-4">
           <p className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: "var(--color-secondary)" }}>
             Net Worth
           </p>

@@ -24,23 +24,23 @@ export function AccountCard({ account, onClick }: AccountCardProps) {
   return (
     <button
       onClick={onClick}
-      className="flex-shrink-0 w-40 flex flex-col justify-between rounded-2xl p-4 transition-all duration-150 active:scale-95 text-left relative overflow-hidden"
+      className="flex-shrink-0 w-40 flex flex-col justify-between rounded-2xl p-4 transition-all duration-150 active:scale-95 text-left"
       style={{
         background: "var(--color-surface)",
         border: "1px solid var(--color-border)",
-        minHeight: "96px",
+        minHeight: "104px",
       }}
     >
-      {/* Left color bar */}
-      <span
-        className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl"
-        style={{ background: color }}
-      />
-
-      <div className="pl-2">
-        <span className="text-base leading-none">{icon}</span>
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ background: color }}
+          />
+          <span className="text-base leading-none">{icon}</span>
+        </div>
         <p
-          className="text-xs font-medium mt-2 uppercase tracking-wider truncate"
+          className="text-xs font-medium uppercase tracking-wider truncate"
           style={{ color: "var(--color-secondary)" }}
         >
           {account.name}
@@ -48,7 +48,7 @@ export function AccountCard({ account, onClick }: AccountCardProps) {
       </div>
 
       <p
-        className="font-mono text-sm font-semibold pl-2 mt-2 leading-tight"
+        className="font-mono text-sm font-semibold mt-2 leading-tight"
         style={{ color: "var(--color-primary)" }}
       >
         {balance}

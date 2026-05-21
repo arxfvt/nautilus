@@ -9,6 +9,7 @@ import { AccountCardRow } from "@/components/dashboard/AccountCardRow";
 import { LastRecordsList } from "@/components/dashboard/LastRecordsList";
 import { BalanceTrendChart } from "@/components/dashboard/BalanceTrendChart";
 import { ExpensesDonutChart } from "@/components/dashboard/ExpensesDonutChart";
+import { NetWorthDisplay } from "@/components/dashboard/NetWorthDisplay";
 import { AmountDisplay } from "@/components/shared/AmountDisplay";
 import type { AccountWithBalance } from "@/types";
 
@@ -138,6 +139,9 @@ export default async function DashboardPage() {
   const expenseBreakdown = Array.from(catMap.values()).sort((a, b) => b.amount - a.amount);
   const totalExpenses = expenseBreakdown.reduce((s, c) => s + c.amount, 0);
 
+  const monthlyIncome = monthTransactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
+  const monthlyChange = monthlyIncome - totalExpenses;
+
   const recentTransactions = recentRaw.map((t) => ({
     id: t.id,
     type: t.type as "income" | "expense" | "transfer",
@@ -158,21 +162,16 @@ export default async function DashboardPage() {
       <div className="pb-32">
         {/* Greeting */}
         <div className="px-4 pt-5 pb-2">
-          <p className="text-xl font-semibold" style={{ color: "var(--color-primary)" }}>
-            {greeting}, {firstName} 👋
+          <p className="text-sm" style={{ color: "var(--color-secondary)" }}>
+            {greeting}
           </p>
-          <p className="text-sm mt-0.5" style={{ color: "var(--color-secondary)" }}>
-            Here&apos;s your financial snapshot
+          <p className="text-2xl font-bold mt-0.5" style={{ color: "var(--color-primary)" }}>
+            {firstName} 👋
           </p>
         </div>
 
         {/* Net worth */}
-        <div className="px-4 pt-3 pb-4">
-          <p className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: "var(--color-secondary)" }}>
-            Net Worth
-          </p>
-          <AmountDisplay amount={netWorth} currency={defaultCurrency} type="neutral" size="xl" />
-        </div>
+        <NetWorthDisplay amount={netWorth} currency={defaultCurrency} monthlyChange={monthlyChange} />
 
         {/* Account cards */}
         <AccountCardRow accounts={accountsWithBalance} />
